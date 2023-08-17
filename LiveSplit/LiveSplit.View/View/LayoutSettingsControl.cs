@@ -195,7 +195,6 @@ namespace LiveSplit.View
             chkAntiAliasing_CheckedChanged(null, null);
             dynamicBackgroundCheckBox_CheckedChanged(null, null);
         }
-    }
 
         private void buttonBackgroundFolder_Click(object sender, EventArgs e)
         {
@@ -301,4 +300,5 @@ namespace LiveSplit.View
         {
             e.Handled = !char.IsDigit(e.KeyChar);
         }
+    }
 }

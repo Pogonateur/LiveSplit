@@ -683,7 +683,7 @@
             this.labelRefreshRate.AutoSize = true;
             this.labelRefreshRate.Location = new System.Drawing.Point(3, 8);
             this.labelRefreshRate.Name = "labelRefreshRate";
-            this.labelRefreshRate.Size = new System.Drawing.Size(93, 13);
+            this.labelRefreshRate.Size = new System.Drawing.Size(95, 13);
             this.labelRefreshRate.TabIndex = 19;
             this.labelRefreshRate.Text = "Refresh Rate (Hz):";
             // 

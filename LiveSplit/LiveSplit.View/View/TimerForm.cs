@@ -1177,13 +1177,13 @@ namespace LiveSplit.View
 
                     else if (hotkeyProfile.SwitchComparisonNext == e)
                         Model.SwitchComparisonNext();
-                }
 
                     else if (hotkeyProfile.NextBackground == e)
                         if (Layout.Settings.DynamicBackgroundKey == true)
                         {
                             changeBackgroundImage();
                         }
+                }
 
                 if (hotkeyProfile.ToggleGlobalHotkeys == e)
                 {
@@ -1260,7 +1260,6 @@ namespace LiveSplit.View
                 }
             }
         }
-
 
         void TimerElapsed()
         {

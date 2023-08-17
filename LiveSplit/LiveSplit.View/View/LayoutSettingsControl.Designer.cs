@@ -1020,7 +1020,7 @@
             this.chkAlwaysOnTop.TabIndex = 25;
             this.chkAlwaysOnTop.Text = "Always on Top";
             this.chkAlwaysOnTop.UseVisualStyleBackColor = true;
-            //
+            // 
             // LayoutSettingsControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1044,8 +1044,8 @@
             this.tableLayoutPanel3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trkBlur)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trkImageOpacity)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trkImageOpacity)).EndInit();
             this.tableLayoutPanel4.ResumeLayout(false);
+            this.tableLayoutPanel4.PerformLayout();
             this.ResumeLayout(false);
 
         }
