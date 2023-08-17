@@ -33,6 +33,7 @@ namespace LiveSplit.Model
         public event EventHandler OnScrollDown;
         public event EventHandler OnSwitchComparisonPrevious;
         public event EventHandler OnSwitchComparisonNext;
+        public event EventHandler OnNextBackground;
 
         public void Start()
         {
@@ -182,6 +183,11 @@ namespace LiveSplit.Model
                 comparisons.ElementAt((comparisons.IndexOf(CurrentState.CurrentComparison) + 1) 
                 % (comparisons.Count));
             OnSwitchComparisonNext?.Invoke(this, null);
+        }
+
+        public void NextBackground()
+        {
+            //yo
         }
 
         public void SwitchComparisonPrevious()

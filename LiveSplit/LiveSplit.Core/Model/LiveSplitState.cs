@@ -87,6 +87,7 @@ namespace LiveSplit.Model
         public event EventHandler OnScrollDown;
         public event EventHandler OnSwitchComparisonPrevious;
         public event EventHandler OnSwitchComparisonNext;
+        public event EventHandler OnNextBackground;
 
         public event EventHandler RunManuallyModified;
         public event EventHandler ComparisonRenamed;

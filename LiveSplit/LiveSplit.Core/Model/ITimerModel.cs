@@ -19,7 +19,8 @@ namespace LiveSplit.Model
         event EventHandler OnScrollDown;
         event EventHandler OnSwitchComparisonPrevious;
         event EventHandler OnSwitchComparisonNext;
-        
+        event EventHandler OnNextBackground;
+
         void Start();
         void InitializeGameTime();
         void Split();
@@ -34,5 +35,6 @@ namespace LiveSplit.Model
         void ScrollDown();
         void SwitchComparisonPrevious();
         void SwitchComparisonNext();
+        void NextBackground();
     }
 }

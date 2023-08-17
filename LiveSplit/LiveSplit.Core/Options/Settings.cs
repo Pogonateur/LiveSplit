@@ -57,6 +57,11 @@ namespace LiveSplit.Options
             get { return HotkeyProfiles.First().Value.SwitchComparisonNext; }
             set { HotkeyProfiles.First().Value.SwitchComparisonNext = value; }
         }
+        public KeyOrButton NextBackground
+        {
+            get { return HotkeyProfiles.First().Value.NextBackground; }
+            set { HotkeyProfiles.First().Value.NextBackground = value; }
+        }
         public float HotkeyDelay {
             get { return HotkeyProfiles.First().Value.HotkeyDelay; }
             set { HotkeyProfiles.First().Value.HotkeyDelay = value; }
@@ -202,6 +207,17 @@ namespace LiveSplit.Options
                     catch (Exception e)
                     {
                         Log.Error(e);
+                    }
+                    if (hotkeyProfile.NextBackground != null)
+                    {
+                        try
+                        {
+                            RegisterHotkey(hook, hotkeyProfile.NextBackground, deactivateForOtherPrograms);
+                        }
+                        catch (Exception e)
+                        {
+                            Log.Error(e);
+                        }
                     }
                 }
 

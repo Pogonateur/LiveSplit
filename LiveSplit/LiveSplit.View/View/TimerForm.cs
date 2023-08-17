@@ -55,6 +55,9 @@ namespace LiveSplit.View
         }
         protected float OldSize { get; set; }
         protected int RefreshesRemaining { get; set; }
+
+        public int indexForNextBackgroundImage { get; set; } = 0;
+        private Image originalBackgroundImage { get; set; }
         public ISettings Settings { get; set; }
         protected Invalidator Invalidator { get; set; }
         protected bool InTimerOnlyMode { get; set; }
@@ -104,6 +107,7 @@ namespace LiveSplit.View
         private bool ShouldRefreshRaces = false;
 
         protected Task RefreshTask { get; set; }
+        protected Task RefreshTask2 { get; set; }
         protected bool InvalidationRequired { get; set; }
 
         public string BasePath { get; set; }
@@ -302,6 +306,7 @@ namespace LiveSplit.View
             SetLayout(Layout);
 
             RefreshTask = Task.Factory.StartNew(RefreshTimerWorker);
+            RefreshTask2 = Task.Factory.StartNew(RefreshDynamicBackgroundImageWorker);
 
             InvalidationRequired = false;
 
@@ -1068,6 +1073,54 @@ namespace LiveSplit.View
             }
         }
 
+        public void RerollIndexForNextBackgroundImage()
+        {
+            var files = Directory.EnumerateFiles(Layout.Settings.BackgroundImageFolder);
+            var imageFiles = files.Where(x => x.Contains(".png") || x.Contains(".jpeg") || x.Contains(".jpg") || x.Contains(".gif") || x.Contains(".bmp")).ToList();
+            int n = imageFiles.Count();
+            if (Layout.Settings.DynamicBackgroundRandom == true)
+            {
+                Random random = new Random();
+                indexForNextBackgroundImage = random.Next(n);
+            }
+            else //sequence is checked
+            {
+                if (indexForNextBackgroundImage >= n - 1)
+                {
+                    indexForNextBackgroundImage = 0;
+                }
+                else
+                {
+                    indexForNextBackgroundImage += 1;
+                }
+            }
+        }
+
+        public void changeBackgroundImage()
+        {
+            if (Layout.Settings.BackgroundImageFolder != null)
+            {
+                originalBackgroundImage = Layout.Settings.BackgroundImage;
+                RerollIndexForNextBackgroundImage();
+                var files = Directory.EnumerateFiles(Layout.Settings.BackgroundImageFolder);
+                var imageFiles = files.Where(x => x.Contains(".png") || x.Contains(".jpeg") || x.Contains(".jpg") || x.Contains(".gif") || x.Contains(".bmp")).ToList();
+                //sort imageFiles by natural order
+                try
+                {
+                    var image = Image.FromFile((string)imageFiles[indexForNextBackgroundImage]);
+                    if (Layout.Settings.BackgroundImage != null && Layout.Settings.BackgroundImage != originalBackgroundImage)
+                        Layout.Settings.BackgroundImage.Dispose();
+
+                    Layout.Settings.BackgroundImage = image;
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex);
+                    MessageBox.Show("Could not load image!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
         void hook_KeyOrButtonPressed(object sender, KeyOrButton e)
         {
             Action action = () =>
@@ -1086,6 +1139,10 @@ namespace LiveSplit.View
                         }
                         else
                             StartOrSplit();
+                        if (Layout.Settings.DynamicBackgroundSplit == true)
+                        {
+                            changeBackgroundImage();
+                        }
                     }
 
                     else if (hotkeyProfile.UndoKey == e)
@@ -1121,6 +1178,12 @@ namespace LiveSplit.View
                     else if (hotkeyProfile.SwitchComparisonNext == e)
                         Model.SwitchComparisonNext();
                 }
+
+                    else if (hotkeyProfile.NextBackground == e)
+                        if (Layout.Settings.DynamicBackgroundKey == true)
+                        {
+                            changeBackgroundImage();
+                        }
 
                 if (hotkeyProfile.ToggleGlobalHotkeys == e)
                 {
@@ -1166,6 +1229,38 @@ namespace LiveSplit.View
                 catch { }
             }
         }
+
+        void RefreshDynamicBackgroundImageWorker()
+        {
+            while (true)
+            {
+                if (Layout.Settings.DynamicBackgroundTime == true)
+                {
+                    int timeToWait;
+                    if (int.TryParse(Layout.Settings.TimeBetweenBackgroundChange, out timeToWait))
+                    {
+                        if (Layout.Settings.UnitForTimeBetweenBackgroundChange.Equals("Minutes"))
+                        {
+                            timeToWait = timeToWait * 60;
+                        }
+                        if (Layout.Settings.UnitForTimeBetweenBackgroundChange.Equals("Hours"))
+                        {
+                            timeToWait = timeToWait * 60 * 60;
+                        }
+                        Thread.Sleep(timeToWait * 1000);
+                        if (Layout.Settings.DynamicBackgroundTime == true)
+                        {
+                            try
+                            {
+                                changeBackgroundImage();
+                            }
+                            catch { }
+                        }
+                    }
+                }
+            }
+        }
+
 
         void TimerElapsed()
         {

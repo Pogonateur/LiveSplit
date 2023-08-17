@@ -31,6 +31,14 @@ namespace LiveSplit.UI.LayoutFactories
             settings.BehindLosingTimeColor = SettingsHelper.ParseColor(element["BehindLosingTimeColor"]);
             settings.BestSegmentColor = SettingsHelper.ParseColor(element["BestSegmentColor"]);
             settings.UseRainbowColor = SettingsHelper.ParseBool(element["UseRainbowColor"], false);
+            settings.DynamicBackground = SettingsHelper.ParseBool(element["DynamicBackground"], false);
+            settings.DynamicBackgroundTime = SettingsHelper.ParseBool(element["DynamicBackgroundTime"], false);
+            settings.DynamicBackgroundKey = SettingsHelper.ParseBool(element["DynamicBackgroundKey"], false);
+            settings.DynamicBackgroundSplit = SettingsHelper.ParseBool(element["DynamicBackgroundSplit"], false);
+            settings.DynamicBackgroundRandom = SettingsHelper.ParseBool(element["DynamicBackgroundRandom"], false);
+            settings.DynamicBackgroundSequence = SettingsHelper.ParseBool(element["DynamicBackgroundSequence"], false);
+            settings.TimeBetweenBackgroundChange = SettingsHelper.ParseString(element["TimeBetweenBackgroundChange"]);
+            settings.UnitForTimeBetweenBackgroundChange = SettingsHelper.ParseString(element["UnitForTimeBetweenBackgroundChange"]);
             settings.NotRunningColor = SettingsHelper.ParseColor(element["NotRunningColor"]);
             settings.PausedColor = SettingsHelper.ParseColor(element["PausedColor"], Color.FromArgb(122, 122, 122));
             settings.AntiAliasing = SettingsHelper.ParseBool(element["AntiAliasing"], true);
@@ -81,6 +89,7 @@ namespace LiveSplit.UI.LayoutFactories
             }
 
             settings.BackgroundImage = SettingsHelper.GetImageFromElement(element["BackgroundImage"]);
+            settings.BackgroundImageFolder = SettingsHelper.ParseString(element["BackgroundImageFolder"]);
 
             return settings;
         }

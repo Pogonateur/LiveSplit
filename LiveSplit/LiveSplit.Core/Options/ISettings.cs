@@ -39,6 +39,7 @@ namespace LiveSplit.Options
         KeyOrButton ToggleGlobalHotkeys { get; set; }
         KeyOrButton SwitchComparisonPrevious { get; set; }
         KeyOrButton SwitchComparisonNext { get; set; }
+        KeyOrButton NextBackground { get; set; }
         float HotkeyDelay { get; set; }
         bool GlobalHotkeysEnabled { get; set; }
         bool DeactivateHotkeysForOtherPrograms { get; set; }

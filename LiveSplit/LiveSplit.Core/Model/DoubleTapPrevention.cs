@@ -48,6 +48,8 @@ namespace LiveSplit.Model
 
         public event EventHandler OnSwitchComparisonNext { add { InternalModel.OnSwitchComparisonNext += value; } remove { InternalModel.OnSwitchComparisonNext -= value; } }
 
+        public event EventHandler OnNextBackground { add { InternalModel.OnNextBackground += value; } remove { InternalModel.OnNextBackground -= value; } }
+
         public DoubleTapPrevention(ITimerModel model)
         {
             InternalModel = model;
@@ -127,6 +129,8 @@ namespace LiveSplit.Model
         public void SwitchComparisonPrevious() => InternalModel.SwitchComparisonPrevious();
 
         public void SwitchComparisonNext() => InternalModel.SwitchComparisonNext();
+
+        public void NextBackground() => InternalModel.NextBackground();
 
         public void InitializeGameTime() => InternalModel.InitializeGameTime();
 

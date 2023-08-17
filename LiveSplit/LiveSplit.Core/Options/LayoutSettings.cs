@@ -24,6 +24,9 @@ namespace LiveSplit.Options
         public BackgroundType BackgroundType { get; set; }
 
         public Image BackgroundImage { get; set; }
+        public string BackgroundImageFolder { get; set; }
+        public string TimeBetweenBackgroundChange { get; set; }
+        public string UnitForTimeBetweenBackgroundChange { get; set; }
         public float ImageOpacity { get; set; }
         public float ImageBlur { get; set; }
 
@@ -36,6 +39,12 @@ namespace LiveSplit.Options
         public bool AntiAliasing { get; set; }
         public bool DropShadows { get; set; }
         public bool UseRainbowColor { get; set; }
+        public bool DynamicBackground { get; set; }
+        public bool DynamicBackgroundTime { get; set; }
+        public bool DynamicBackgroundKey { get; set; }
+        public bool DynamicBackgroundSplit { get; set; }
+        public bool DynamicBackgroundRandom { get; set; }
+        public bool DynamicBackgroundSequence { get; set; }
 
         public float Opacity { get; set; }
         public bool MousePassThroughWhileRunning { get; set; }
@@ -61,6 +70,14 @@ namespace LiveSplit.Options
             BehindLosingTimeColor = settings.BehindLosingTimeColor;
             BestSegmentColor = settings.BestSegmentColor;
             UseRainbowColor = settings.UseRainbowColor;
+            DynamicBackground = settings.DynamicBackground;
+            DynamicBackgroundTime = settings.DynamicBackgroundTime;
+            DynamicBackgroundKey = settings.DynamicBackgroundKey;
+            DynamicBackgroundSplit = settings.DynamicBackgroundSplit;
+            DynamicBackgroundRandom = settings.DynamicBackgroundRandom;
+            DynamicBackgroundSequence = settings.DynamicBackgroundSequence;
+            TimeBetweenBackgroundChange = settings.TimeBetweenBackgroundChange;
+            UnitForTimeBetweenBackgroundChange = settings.UnitForTimeBetweenBackgroundChange;
             NotRunningColor = settings.NotRunningColor;
             PausedColor = settings.PausedColor;
             TextOutlineColor = settings.TextOutlineColor;
@@ -76,6 +93,7 @@ namespace LiveSplit.Options
             MousePassThroughWhileRunning = settings.MousePassThroughWhileRunning;
             BackgroundType = settings.BackgroundType;
             BackgroundImage = settings.BackgroundImage;
+            BackgroundImageFolder = settings.BackgroundImageFolder;
             ImageOpacity = settings.ImageOpacity;
             ImageBlur = settings.ImageBlur;
         }

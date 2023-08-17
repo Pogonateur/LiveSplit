@@ -23,6 +23,14 @@ namespace LiveSplit.UI.LayoutSavers
             SettingsHelper.CreateSetting(document, element, "BehindLosingTimeColor", settings.BehindLosingTimeColor) ^
             SettingsHelper.CreateSetting(document, element, "BestSegmentColor", settings.BestSegmentColor) ^
             SettingsHelper.CreateSetting(document, element, "UseRainbowColor", settings.UseRainbowColor) ^
+            SettingsHelper.CreateSetting(document, element, "DynamicBackground", settings.DynamicBackground) ^
+            SettingsHelper.CreateSetting(document, element, "DynamicBackgroundTime", settings.DynamicBackgroundTime) ^
+            SettingsHelper.CreateSetting(document, element, "DynamicBackgroundKey", settings.DynamicBackgroundKey) ^
+            SettingsHelper.CreateSetting(document, element, "DynamicBackgroundSplit", settings.DynamicBackgroundSplit) ^
+            SettingsHelper.CreateSetting(document, element, "DynamicBackgroundRandom", settings.DynamicBackgroundRandom) ^
+            SettingsHelper.CreateSetting(document, element, "DynamicBackgroundSequence", settings.DynamicBackgroundSequence) ^
+            SettingsHelper.CreateSetting(document, element, "TimeBetweenBackgroundChange", settings.TimeBetweenBackgroundChange) ^
+            SettingsHelper.CreateSetting(document, element, "UnitForTimeBetweenBackgroundChange", settings.UnitForTimeBetweenBackgroundChange) ^
             SettingsHelper.CreateSetting(document, element, "NotRunningColor", settings.NotRunningColor) ^
             SettingsHelper.CreateSetting(document, element, "PausedColor", settings.PausedColor) ^
             SettingsHelper.CreateSetting(document, element, "TextOutlineColor", settings.TextOutlineColor) ^
@@ -36,6 +44,7 @@ namespace LiveSplit.UI.LayoutSavers
             SettingsHelper.CreateSetting(document, element, "DropShadows", settings.DropShadows) ^
             SettingsHelper.CreateSetting(document, element, "BackgroundType", settings.BackgroundType) ^
             SettingsHelper.CreateSetting(document, element, "BackgroundImage", settings.BackgroundImage) ^
+            SettingsHelper.CreateSetting(document, element, "BackgroundImageFolder", settings.BackgroundImageFolder) ^
             SettingsHelper.CreateSetting(document, element, "ImageOpacity", settings.ImageOpacity) ^
             SettingsHelper.CreateSetting(document, element, "ImageBlur", settings.ImageBlur) ^
             SettingsHelper.CreateSetting(document, element, "Opacity", settings.Opacity) ^

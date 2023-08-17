@@ -3,6 +3,9 @@ using System.Drawing;
 using System.Windows.Forms;
 using LiveSplit.UI;
 using LiveSplit.Options;
+using System.Linq;
+using System.Text.RegularExpressions;
+using Microsoft.WindowsAPICodePack.Dialogs;
 
 namespace LiveSplit.View
 {
@@ -18,6 +21,8 @@ namespace LiveSplit.View
 
         private Image originalBackgroundImage { get; set; }
 
+        private string dynamicBackgroundImagesFolder { get; set; }
+        protected bool IsInDialogMode = false;
         public string TimerFont { get { return SettingsHelper.FormatFont(Settings.TimerFont); } }
         public string MainFont { get { return SettingsHelper.FormatFont(Settings.TimesFont); } }
         public string SplitNamesFont { get { return SettingsHelper.FormatFont(Settings.TextFont); } }
@@ -36,6 +41,14 @@ namespace LiveSplit.View
             chkAntiAliasing.DataBindings.Add("Checked", Settings, "AntiAliasing", false, DataSourceUpdateMode.OnPropertyChanged);
             chkDropShadows.DataBindings.Add("Checked", Settings, "DropShadows", false, DataSourceUpdateMode.OnPropertyChanged);
             chkRainbow.DataBindings.Add("Checked", Settings, "UseRainbowColor", false, DataSourceUpdateMode.OnPropertyChanged);
+            dynamicBackgroundCheckBox.DataBindings.Add("Checked", Settings, "DynamicBackground", false, DataSourceUpdateMode.OnPropertyChanged);
+            dynamicBackgroundTimeCheckBox.DataBindings.Add("Checked", Settings, "DynamicBackgroundTime", false, DataSourceUpdateMode.OnPropertyChanged);
+            dynamicBackgroundKeyCheckBox.DataBindings.Add("Checked", Settings, "DynamicBackgroundKey", false, DataSourceUpdateMode.OnPropertyChanged);
+            dynamicBackgroundSplitCheckBox.DataBindings.Add("Checked", Settings, "DynamicBackgroundSplit", false, DataSourceUpdateMode.OnPropertyChanged);
+            dynamicBackgroundChangeRandomRadioButton.DataBindings.Add("Checked", Settings, "DynamicBackgroundRandom", false, DataSourceUpdateMode.OnPropertyChanged);
+            dynamicBackgroundChangeSequenceRadioButton.DataBindings.Add("Checked", Settings, "DynamicBackgroundSequence", false, DataSourceUpdateMode.OnPropertyChanged);
+            timeBetweenBackgroundChangeTextBox.DataBindings.Add("Text", Settings, "TimeBetweenBackgroundChange", false, DataSourceUpdateMode.OnPropertyChanged);
+            unitForTimeBackgroundChangeComboBox.DataBindings.Add("SelectedItem", Settings, "UnitForTimeBetweenBackgroundChange", false, DataSourceUpdateMode.OnPropertyChanged);
             btnTextColor.DataBindings.Add("BackColor", Settings, "TextColor", false, DataSourceUpdateMode.OnPropertyChanged);
             btnBackground.DataBindings.Add("BackColor", Settings, "BackgroundColor", false, DataSourceUpdateMode.OnPropertyChanged);
             btnBackground2.DataBindings.Add("BackColor", Settings, "BackgroundColor2", false, DataSourceUpdateMode.OnPropertyChanged);
@@ -61,6 +74,7 @@ namespace LiveSplit.View
 
             cmbBackgroundType.SelectedItem = GetBackgroundTypeString(Settings.BackgroundType);
             originalBackgroundImage = Settings.BackgroundImage;
+            dynamicBackgroundImagesFolder = Settings.BackgroundImageFolder;
         }        
 
         private string GetBackgroundTypeString(BackgroundType type)
@@ -179,6 +193,112 @@ namespace LiveSplit.View
         {
             chkRainbow_CheckedChanged(null, null);
             chkAntiAliasing_CheckedChanged(null, null);
+            dynamicBackgroundCheckBox_CheckedChanged(null, null);
         }
     }
+
+        private void buttonBackgroundFolder_Click(object sender, EventArgs e)
+        {
+            if (CommonFileDialog.IsPlatformSupported)
+            {
+                using (CommonOpenFileDialog dialog = new CommonOpenFileDialog())
+                {
+                    dialog.IsFolderPicker = true;
+                    dialog.Multiselect = false;
+                    var result = dialog.ShowDialog(this.Handle);
+                    if (result == CommonFileDialogResult.Ok)
+                    {
+                        dynamicBackgroundImagesFolder = dialog.FileName;
+                        Settings.BackgroundImageFolder = dynamicBackgroundImagesFolder;
+                        TimerForm timerForm;
+                        try
+                        {
+                            timerForm = Application.OpenForms.OfType<TimerForm>().First();
+                            timerForm.RerollIndexForNextBackgroundImage();
+                        }
+                        catch (Exception e2)
+                        {
+                            Log.Error(e2);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                using (FolderBrowserDialog dialog = new FolderBrowserDialog())
+                {
+                    dialog.RootFolder = Environment.SpecialFolder.MyMusic;
+                    if (dialog.ShowDialog() != DialogResult.Cancel)
+                    {
+                        dynamicBackgroundImagesFolder = dialog.SelectedPath;
+                        Settings.BackgroundImageFolder = dynamicBackgroundImagesFolder;
+                    }
+                }
+            }
+        }
+
+        private void dynamicBackgroundCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if(dynamicBackgroundCheckBox.Checked == false)
+            {
+                dynamicBackgroundChangeRandomRadioButton.Enabled = false;
+                dynamicBackgroundChangeSequenceRadioButton.Enabled = false;
+                buttonBackgroundFolder.Enabled = false;
+                dynamicBackgroundTimeCheckBox.Enabled = false;
+                dynamicBackgroundKeyCheckBox.Enabled = false;
+                dynamicBackgroundSplitCheckBox.Enabled = false;
+                timeBetweenBackgroundChangeTextBox.Enabled = false;
+                unitForTimeBackgroundChangeComboBox.Enabled = false;
+                cmbBackgroundType.Enabled = true;
+                btnChangeBackground.Enabled = false;
+                btnBackground2.Enabled = true;
+            }
+            else
+            {
+                dynamicBackgroundChangeRandomRadioButton.Enabled = true;
+                dynamicBackgroundChangeSequenceRadioButton.Enabled = true;
+                buttonBackgroundFolder.Enabled = true;
+                dynamicBackgroundTimeCheckBox.Enabled = true;
+                dynamicBackgroundKeyCheckBox.Enabled = true;
+                dynamicBackgroundSplitCheckBox.Enabled = true;
+                timeBetweenBackgroundChangeTextBox.Enabled = true;
+                unitForTimeBackgroundChangeComboBox.Enabled = true;
+                cmbBackgroundType.SelectedItem = cmbBackgroundType.Text = "Image";
+                cmbBackgroundType.Enabled = false;
+                btnChangeBackground.Enabled = true;
+                btnBackground2.Enabled = false;
+            }
+        }
+
+        private void btnChangeBackground_Click(object sender, EventArgs e)
+        {
+            if (dynamicBackgroundImagesFolder != null)
+            {
+                TimerForm timerForm;
+                try
+                {
+                    timerForm = Application.OpenForms.OfType<TimerForm>().First();
+                    timerForm.changeBackgroundImage();
+                }
+                catch (Exception e2)
+                {
+                    Log.Error(e2);
+                }
+            }
+        }
+
+        private void dynamicBackgroundChangeRandomRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            dynamicBackgroundChangeRandomRadioButton.Checked = !dynamicBackgroundChangeSequenceRadioButton.Checked;
+        }
+
+        private void dynamicBackgroundChangeSequenceRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            dynamicBackgroundChangeSequenceRadioButton.Checked = !dynamicBackgroundChangeRandomRadioButton.Checked;
+        }
+
+        private void timeBetweenBackgroundChangeTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar);
+        }
 }

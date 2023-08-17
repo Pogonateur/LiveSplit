@@ -17,6 +17,7 @@ namespace LiveSplit.Options
         public KeyOrButton ToggleGlobalHotkeys { get; set; }
         public KeyOrButton SwitchComparisonPrevious { get; set; }
         public KeyOrButton SwitchComparisonNext { get; set; }
+        public KeyOrButton NextBackground { get; set; }
 
         public float HotkeyDelay { get; set; }
         public bool GlobalHotkeysEnabled { get; set; }
@@ -81,6 +82,12 @@ namespace LiveSplit.Options
                         hotkeyProfile.SwitchComparisonNext = new KeyOrButton(keySwitchNext.InnerText);
                     else
                         hotkeyProfile.SwitchComparisonNext = null;
+
+                    var keyNextBG = element["NextBackground"];
+                    if (!string.IsNullOrEmpty(keyNextBG.InnerText))
+                        hotkeyProfile.NextBackground = new KeyOrButton(keyNextBG.InnerText);
+                    else
+                        hotkeyProfile.NextBackground = null;
                 }
             }
 
@@ -142,6 +149,11 @@ namespace LiveSplit.Options
                 switchComparisonNext.InnerText = SwitchComparisonNext.ToString();
             parent.AppendChild(switchComparisonNext);
 
+            var nextBackground = document.CreateElement("NextBackground");
+            if (NextBackground != null)
+                nextBackground.InnerText = NextBackground.ToString();
+            parent.AppendChild(nextBackground);
+
             CreateSetting(document, parent, "GlobalHotkeysEnabled", GlobalHotkeysEnabled);
             CreateSetting(document, parent, "DeactivateHotkeysForOtherPrograms", DeactivateHotkeysForOtherPrograms);
             CreateSetting(document, parent, "DoubleTapPrevention", DoubleTapPrevention);
@@ -163,6 +175,7 @@ namespace LiveSplit.Options
                 ToggleGlobalHotkeys = ToggleGlobalHotkeys,
                 SwitchComparisonPrevious = SwitchComparisonPrevious,
                 SwitchComparisonNext = SwitchComparisonNext,
+                NextBackground = NextBackground,
                 HotkeyDelay = HotkeyDelay,
                 GlobalHotkeysEnabled = GlobalHotkeysEnabled,
                 DeactivateHotkeysForOtherPrograms = DeactivateHotkeysForOtherPrograms,
@@ -181,7 +194,8 @@ namespace LiveSplit.Options
                 PauseKey,
                 ToggleGlobalHotkeys,
                 SwitchComparisonPrevious,
-                SwitchComparisonNext
+                SwitchComparisonNext,
+                NextBackground
             };
 
             return buttons.Any(button => button?.IsButton ?? false);

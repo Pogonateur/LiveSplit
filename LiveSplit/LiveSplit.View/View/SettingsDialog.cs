@@ -26,6 +26,7 @@ namespace LiveSplit.View
         public string PauseKey => FormatKey(Settings.HotkeyProfiles[SelectedHotkeyProfile].PauseKey);
         public string SwitchComparisonPrevious => FormatKey(Settings.HotkeyProfiles[SelectedHotkeyProfile].SwitchComparisonPrevious);
         public string SwitchComparisonNext => FormatKey(Settings.HotkeyProfiles[SelectedHotkeyProfile].SwitchComparisonNext);
+        public string NextBackground => FormatKey(Settings.HotkeyProfiles[SelectedHotkeyProfile].NextBackground);
         public string ToggleGlobalHotkeys => FormatKey(Settings.HotkeyProfiles[SelectedHotkeyProfile].ToggleGlobalHotkeys);
         public float HotkeyDelay
         {
@@ -102,6 +103,7 @@ namespace LiveSplit.View
             txtToggle.Text = ToggleGlobalHotkeys;
             txtSwitchPrevious.Text = SwitchComparisonPrevious;
             txtSwitchNext.Text = SwitchComparisonNext;
+            txtNextBackground.Text = NextBackground;
 
             chkGlobalHotkeys.Checked = GlobalHotkeysEnabled;
             chkDoubleTap.Checked = DoubleTapPrevention;
@@ -286,7 +288,13 @@ namespace LiveSplit.View
                 Settings.HotkeyProfiles[SelectedHotkeyProfile].SwitchComparisonNext = x;
             });
         }
-
+        private void Next_Background_Set_Enter(object sender, EventArgs e)
+        {
+            SetHotkeyHandlers((TextBox)sender, x =>
+            {
+                Settings.HotkeyProfiles[SelectedHotkeyProfile].NextBackground = x;
+            });
+        }
         private void ClickControl(object sender, EventArgs e)
         {
             chkGlobalHotkeys.Select();
@@ -416,4 +424,9 @@ namespace LiveSplit.View
            
         }
     }
+
+        private void label14_Click(object sender, EventArgs e)
+        {
+
+        }
 }
