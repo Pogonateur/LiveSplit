@@ -661,16 +661,7 @@ namespace LiveSplit.View
 
         private void CheckForUpdates()
         {
-            UpdateHelper.Update(this, () => Invoke(new Action(() =>
-                         {
-                             Process.GetCurrentProcess().Kill();
-                         })),
-                        new IUpdateable[] {
-                            new LiveSplitUpdateable(),
-                            UpdateManagerUpdateable.Instance }
-                            .Concat(ComponentManager.ComponentFactories.Values)
-                            .Concat(ComponentManager.RaceProviderFactories.Values)
-                            .ToArray());
+            //No updates for this LiveSplit
         }
 
         void CurrentState_OnUndoSplit(object sender, EventArgs e)
